@@ -40,3 +40,7 @@ async def upload_ontology(file: UploadFile = File()):
 
   os.remove(tmp_path)
   return {"status": "uploaded"}
+
+@app.get("/parsed-ontology")
+def get_parsed_ontology():
+  return ontology_data

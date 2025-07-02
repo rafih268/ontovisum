@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function Upload() {
+  const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
+
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      setSelectedFileName(file.name);
+
       const formData = new FormData();
       formData.append('file', file);
 
@@ -27,6 +31,9 @@ export default function Upload() {
         onChange={handleFileChange}
         className="hidden"
       />
+      {selectedFileName && (
+        <div className="text-sm text-gray-600 my-2">Selected: {selectedFileName}</div>
+      )}
     </div>
   );
 }

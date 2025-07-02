@@ -16,7 +16,17 @@ export default function Upload() {
 
   return (
     <div className="p-4">
-      <input type="file" onChange={handleFileChange} />
+      <label
+        htmlFor="file-upload"
+        className="cursor-pointer inline-block px-4 py-2 rounded bg-blue-200 shadow-sm hover:bg-blue-400 transition-colors"
+      >Choose File</label>
+
+      <input
+        id="file-upload"
+        type="file"
+        onChange={handleFileChange}
+        className="hidden"
+      />
     </div>
   );
 }

@@ -16,5 +16,5 @@ export default function DiagramCanvas() {
     });
   }, []);
 
-  return <div ref={canvasRef} className="p-4 border h-full" />;
+  return <div ref={canvasRef} className="p-4 h-[600px] border shadow-md rounded" />;
 }

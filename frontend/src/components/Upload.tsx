@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { UploadCloud } from "lucide-react";
 
 export default function Upload() {
   const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
@@ -19,11 +20,14 @@ export default function Upload() {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 w-56">
       <label
         htmlFor="file-upload"
-        className="cursor-pointer inline-block px-4 py-2 rounded bg-blue-200 shadow-sm hover:bg-blue-400 transition-colors"
-      >Choose File</label>
+        className="inline-flex items-baseline gap-2 cursor-pointer px-4 py-2 rounded bg-blue-200 shadow-sm hover:bg-blue-400 transition-colors"
+      >
+        <UploadCloud className="h-4 w-4" />
+        Choose File
+      </label>
 
       <input
         id="file-upload"
@@ -32,7 +36,7 @@ export default function Upload() {
         className="hidden"
       />
       {selectedFileName && (
-        <div className="text-sm text-gray-600 my-2">Selected: {selectedFileName}</div>
+        <div className="text-sm text-gray-600 mt-2">Selected: {selectedFileName}</div>
       )}
     </div>
   );

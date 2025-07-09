@@ -36,7 +36,7 @@ export default function Upload() {
         className="hidden"
       />
       {selectedFileName && (
-        <div className="text-sm text-gray-600 mt-2">Selected: {selectedFileName}</div>
+        <div className="text-sm text-green-600 mt-2">Selected: {selectedFileName}</div>
       )}
     </div>
   );

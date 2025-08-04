@@ -40,20 +40,37 @@ async def upload_ontology(file: UploadFile = File()):
       "name": cls.name
     })
   
-  object_props = []
-  for prop in onto.object_properties():
-    domains = [d.name for d in prop.domain]
-    ranges = [r.name for r in prop.range]
-    object_props.append({
-      "name": prop.name,
-      "domain": prop.domains,
-      "range": prop.ranges
-    })
+  # object_props = []
+  # for prop in onto.object_properties():
+  #   domains = [d.name for d in prop.domain]
+  #   ranges = [r.name for r in prop.range]
+  #   object_props.append({
+  #     "name": prop.name,
+  #     "domain": domains,
+  #     "range": ranges
+  #   })
   
   data_props = []
   for prop in onto.data_properties():
-    domains = [d.name for d in prop.domain]
-    ranges = [str(r) for r in prop.range]
+    domains = []
+    for d in prop.domain:
+      if isinstance(d, ThingClass):
+        domains.append(d.name)
+      elif isinstance(d, Or):
+        domains.extend(cls.name for cls in d.Classes)
+      else:
+        domains.append(str(d))
+        
+
+    ranges = []
+    for r in prop.range:
+      if isinstance(r, ThingClass):
+        ranges.append(r.name)
+      elif isinstance(r, Or):
+        ranges.extend(cls.name for cls in r.Classes)
+      else:
+        ranges.append(str(r))
+
     data_props.append({
       "name": prop.name,
       "domain": domains,
@@ -61,7 +78,7 @@ async def upload_ontology(file: UploadFile = File()):
     })
 
   ontology_data["classes"] = classes
-  ontology_data["object_properties"] = object_props
+  # ontology_data["object_properties"] = object_props
   ontology_data["data_properties"] = data_props
 
   os.remove(tmp_path)

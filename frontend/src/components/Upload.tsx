@@ -23,7 +23,7 @@ export default function Upload() {
     <div className="p-4 w-56">
       <label
         htmlFor="file-upload"
-        className="inline-flex items-baseline gap-2 cursor-pointer px-4 py-2 rounded bg-blue-200 shadow-sm hover:bg-blue-400 transition-colors"
+        className="inline-flex items-baseline gap-2 cursor-pointer px-4 py-2 rounded bg-blue-200 shadow-sm hover:bg-blue-400 hover:text-gray-100 transition-colors"
       >
         <UploadCloud className="h-4 w-4" />
         Choose File

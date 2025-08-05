@@ -5,10 +5,10 @@ import Footer from './components/Footer';
 
 export default function App() {
   return (
-    <div>
-      <div className="bg-gray-50 flex flex-col min-h-screen">
+    <div className="bg-gray-50">
+      <div className="flex flex-col min-h-screen">
         <Navbar />
-        <div className="flex flex-1 items-start justify-center p-4 space-x-4 max-w-7xl mx-auto">
+        <div className="flex flex-1 items-start justify-center p-4 space-x-4 max-w-7xl mx-auto mt-15">
           <div className="flex-1">
             <DiagramCanvas />
           </div>

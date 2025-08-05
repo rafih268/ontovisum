@@ -18,11 +18,13 @@ export default function DiagramCanvas() {
   }, []);
 
   useEffect(() => {
-    if (!ontology) return;
-
-    console.log(ontology);
+    if (!ontology) {
+      setHasDiagram(false);
+      return;
+    }
 
     const graph = new dia.Graph();
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const paper = new dia.Paper({
       el: canvasRef.current!,
@@ -30,30 +32,91 @@ export default function DiagramCanvas() {
       width: 1200,
       height: 600,
       gridSize: 10,
-      background: { color: '#e0f2fe'},
+      background: { color: "#e0f2fe"},
     });
     
-    const nodes: { [key:string]: dia.Element } = {};
+    const nodes: { [key: string]: dia.Element } = {};
 
-    ontology.classes.forEach((cls, idx) => {
-      // Find data properties belonging to this class
-      const clsDataProps = ontology.data_properties
-        .filter(dp => dp.domain.includes(cls.name))
-        .map(dp => `${dp.name}: ${dp.range.join(', ')}`)
-        .join('\n');
+    const startX = 100;
+    const startY = 100;
+    const horizontalSpacing = 500;
+    const verticalSpacing = 100;
 
-      const labelText = `${cls.name}\n${clsDataProps}`;
+    ontology.classes.slice(0, 2).forEach((cls, classIndex) => {
+      const x = startX + classIndex * horizontalSpacing;
+      const y = startY;
 
-      const rect = new shapes.standard.Rectangle();
-      rect.position(100 + idx * 200, 100);
-      rect.resize(150, 100);
-      rect.attr({
-        body: { fill: '#f0f9ff', stroke: '#0284c7', rx: 6 },
-        label: { text: labelText, fill: '#0c4a6e', fontSize: 12 }
+      const classRect = new shapes.standard.Rectangle();
+      classRect.position(x, y);
+      classRect.resize(160, 50);
+      classRect.attr({
+        body: { fill: "#f0f9ff", stroke: "#0284c7", rx: 6 },
+        label: { text: cls.name, fill: "#0c4a6e", fontSize: 14 },
       });
-      rect.addTo(graph);
+      classRect.addTo(graph);
 
-      nodes[cls.name] = rect;
+      nodes[cls.name] = classRect;
+
+      const clsDataPropsMap = new Map<string, Set<string>>();
+
+      ontology.data_properties.forEach((dp) => {
+        if (!dp.domain.includes(cls.name)) return;
+
+        if (!clsDataPropsMap.has(dp.name)) {
+          clsDataPropsMap.set(dp.name, new Set(dp.range));
+        } else {
+          const rangeSet = clsDataPropsMap.get(dp.name)!;
+          dp.range.forEach((r) => rangeSet.add(r));
+        }
+      });
+
+      const clsDataProps = Array.from(clsDataPropsMap.entries()).map(([name, rangeSet]) => ({
+        name,
+        range: Array.from(rangeSet),
+      }));
+
+      console.log(clsDataProps);
+
+      clsDataProps.forEach((dp, dpIndex) => {
+        dp.range.forEach((rangeValue, rangeIndex) => {
+          const valueNode = new shapes.standard.Rectangle();
+          const valueY =
+            y +
+            verticalSpacing +
+            dpIndex * verticalSpacing +
+            rangeIndex * 60;
+          
+          valueNode.position(x, valueY);
+          valueNode.resize(160, 40);
+          valueNode.attr({
+            body: { fill: "#fff7ed", stroke: "#f97316", rx: 6 },
+            label: { text: rangeValue, fill: "#7c2d12", fontSize: 13, },
+          });
+          valueNode.addTo(graph);
+
+          const link = new shapes.standard.Link();
+          link.source(classRect);
+          link.target(valueNode);
+          link.attr({
+            line: {
+              stroke: "#0284c7",
+              strokeWidth: 2,
+              targetMarker: {
+                type: "path",
+                d: "M 10 -5 0 0 10 5 z",
+              },
+            },
+            label: {
+              text: dp.name,
+              fill: "#1e3a8a",
+              fontSize: 10,
+              fontWeight: "bold",
+            },
+          });
+          link.labels([{ position: 0.5, attrs: { text: { text: dp.name } } }]);
+          link.addTo(graph);
+        });
+      });
     });
 
     setHasDiagram(true);

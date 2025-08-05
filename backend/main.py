@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from owlready2 import *
 import tempfile
 import os
+import re
 
 app = FastAPI()
 
@@ -29,26 +30,12 @@ async def upload_ontology(file: UploadFile = File()):
     tmp_path = tmp.name
   
   onto = get_ontology(f"file://{tmp_path}").load()
-  
-  # classes = [cls.name for cls in onto.classes()]
-  # instances = [inst.name for inst in onto.individuals()]
-  # relations = [(prop.name, prop.domain, prop.range) for prop in onto.object_properties()]
 
   classes = []
   for cls in onto.classes():
     classes.append({
       "name": cls.name
     })
-  
-  # object_props = []
-  # for prop in onto.object_properties():
-  #   domains = [d.name for d in prop.domain]
-  #   ranges = [r.name for r in prop.range]
-  #   object_props.append({
-  #     "name": prop.name,
-  #     "domain": domains,
-  #     "range": ranges
-  #   })
   
   data_props = []
   for prop in onto.data_properties():
@@ -69,7 +56,11 @@ async def upload_ontology(file: UploadFile = File()):
       elif isinstance(r, Or):
         ranges.extend(cls.name for cls in r.Classes)
       else:
-        ranges.append(str(r))
+        match = re.match(r"<class '([\w\.]+)'>", str(r))
+        if match:
+          ranges.append(match.group(1).split('.')[-1])
+        else:
+          ranges.append(str(r))
 
     data_props.append({
       "name": prop.name,

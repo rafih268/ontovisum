@@ -3,7 +3,7 @@ import { HomeIcon, InformationCircleIcon, EnvelopeIcon } from "@heroicons/react/
 
 export default function Navbar() {
   return (
-    <nav className="bg-blue-500 text-white shadow-md rounded-lg mt-2 mx-2 mb-10">
+    <nav className="sticky top-2 z-50 bg-blue-500 text-white shadow-md rounded-lg mt-2 mx-2 mb-10">
       <div className="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center">
         <div className="text-2xl font-semibold group cursor-pointer flex items-center space-x-1">
           <a href="/" className="flex space-x-1">

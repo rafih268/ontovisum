@@ -24,14 +24,12 @@ export default function DiagramBuilder() {
   return (
     <div className="flex flex-1 items-start justify-center p-4 space-x-4 max-w-7xl mx-auto mt-15">
       <div className="flex-1">
-        {/*DiagramCanvas.tsx has to be updated for this line to work.*/}
-        {/*<DiagramCanvas ontology={ontology} />*/}
+        <DiagramCanvas ontology={ontology} />
       </div>
 
       <div className="p-4 rounded shadow bg-blue-50 h-fit">
         <h2 className="text-xl font-bold">Upload your Ontology</h2>
-        {/*Upload.tsx has to be updated for this line to work.*/}
-        {/*<Upload onUploadComplete={() => setFileUploaded(true)} />*/}
+        <Upload onUploadComplete={() => setFileUploaded(true)} />
         <button
           onClick={handleGenerateClick}
           className="mt-4 w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
@@ -47,7 +45,7 @@ export default function DiagramBuilder() {
             <p className="text-sm text-gray-600">Please uplaod an ontology file before generating a diagram.</p>
             <button
               onClick={() => setShowModal(false)}
-              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
             >
               Okay
             </button>

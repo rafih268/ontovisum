@@ -6,16 +6,13 @@ interface Ontology {
   data_properties: { name: string; domain: string[]; range: string[] }[];
 }
 
-export default function DiagramCanvas() {
-  const canvasRef = useRef<HTMLDivElement>(null);
-  const [ontology, setOntology] = useState<Ontology | null>(null);
-  const [hasDiagram, setHasDiagram] = useState(false);
+interface DiagramCanvasProps {
+  ontology: Ontology | null;
+}
 
-  useEffect(() => {
-    fetch('http://localhost:8000/parsed-ontology')
-      .then(res => res.json())
-      .then(data => setOntology(data));
-  }, []);
+export default function DiagramCanvas({ ontology }: DiagramCanvasProps) {
+  const canvasRef = useRef<HTMLDivElement>(null);
+  const [hasDiagram, setHasDiagram] = useState(false);
 
   useEffect(() => {
     if (!ontology) {

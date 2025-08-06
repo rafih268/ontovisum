@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { UploadCloud } from "lucide-react";
 
-export default function Upload() {
+interface UploadProps {
+  onUploadComplete: () => void;
+}
+
+export default function Upload({ onUploadComplete }: UploadProps) {
   const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,6 +20,8 @@ export default function Upload() {
         method: 'POST',
         body: formData,
       });
+
+      onUploadComplete();
     }
   };
 

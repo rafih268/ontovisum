@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { dia, shapes } from "@joint/plus";
+import { dia, shapes } from "@joint/core";
 
 interface Ontology {
   classes: { name: string }[];
